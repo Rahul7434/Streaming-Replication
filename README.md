@@ -1,10 +1,11 @@
 # Streaming-Replication Postgresql
-This replication is based on log shipping. In general primary server sends  WAL (Write-Ahead Log) data to Standby server. This setup provodes Advantage high availability (standby server is redy to take in caseprimary failure) and load balancing (read queries can be directed to standby server, reducing load on the primary) in postgresql.
+This replication is based on log shipping. In general primary server sends  WAL (Write-Ahead Log) data to Standby server. This setup provides Advantage high availability (standby server is ready to take care in case primary failure) and load balancing (read queries can be directed to standby server, reducing load on the primary) in postgresql.
 #### Postgresql support two main types of streaming replication based on how the wal(write Ahead Log) data is sent and applied on the standby server.
-- Synchronous Replication
-- Asyncronous Replication
+- Streaming Replication(physical replication).
+- Logical Replication
+- Cascading Replication
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##### Synchronous Replication:- 
+##### Synchronous:- 
 - Ensures that Transaction on the primary server are only considered committed after the data is writen to the wal on the strandby server.
 1. Provides zero data loss.
 2. Acknowledges commits only after at least one standby confirms it has received and written the WAL.
@@ -13,7 +14,7 @@ This replication is based on log shipping. In general primary server sends  WAL 
 ```
 synchronous_standby_names = 'FIRST 1 (<standby_name1>, <standby_name2>)'
 ```
-##### Asynchronous Replication
+##### Asynchronous
 - Transactions on the primary server are considered committed as soon as the WAL is written to the disk on the primary, without waiting for acknowledgment from standby servers.
 1. Higher performance due to non-blocking behavior.
 2. There is a risk of data loss in case the primary server crashes before the WAL reaches the standby.
@@ -26,7 +27,7 @@ synchronous_standby_names = 'FIRST 1 (<standby_name1>, <standby_name2>)'
 - Install Postgresql with same version on both servers Standby & primary, but do not initialize DB on standby serever (note- we can setup with different version but some functionality may be will give issue).
     - Go to on postgresql.org official website
     - Select Linux operating system
-    - click on "Red Hat/Rocky/AlmaLinux" it will open the page for download server based on versions.
+    - click on dirstribution "Red Hat/Rocky/AlmaLinux" it will open the page for download server based on versions.
     - select postgresql version that you want to install and select your RHL vesion platform version with architecture (32,64 bit).
     - After all it will provide you installation steps.
       ```
