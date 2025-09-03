@@ -167,5 +167,33 @@ SELECT * FROM pg_create_physical-replication_slot('slot_name');
 	primary_slot_name = "slot_name"
 ```
 
+```
+-- Last WAL received
+SELECT pg_last_wal_receive_lsn();
+
+-- Last WAL replayed
+SELECT pg_last_wal_replay_lsn();
+
+-- Time of last replay
+SELECT pg_last_xact_replay_timestamp();
+
+-- Replay lag in seconds
+SELECT EXTRACT(EPOCH FROM now() - pg_last_xact_replay_timestamp()) AS replay_lag;
+
+
+
+-- Check if the server is in recovery mode (i.e., standby)
+SELECT pg_is_in_recovery();
+
+-- Shows details about the WAL receiver process on the standby
+SELECT * FROM pg_stat_wal_receiver;
+
+SELECT * FROM pg_stat_recovery_prefetch;
+
+SELECT * FROM pg_replication_slots;
+
+log_replication_commands = on
+
+```
   
     
