@@ -73,6 +73,12 @@ CREATE ROLE replicator WITH REPLICATION PASSWORD 'your_password' LOGIN;
 - Copy Data from Primary to Standby, Use pg_basebackup to create a replica of the primary:
   ```
   pg_basebackup -h <primary_server_ip> -U replicator -D <standby_data_directory> -Fp -Xs -P -R
+  --compress=gzip:9
+  --incremental=PATH_TO_MANIFEST (pg_combinebackup)
+  --manifest
+  --write-recovery-conf
+  
+  
   ```
     - Note:- The -R flag automatically creates the standby.signal file and a primary_conninfo entry in postgresql.auto.conf. other wiae you need to create standby.signal file and add primary_conninfo entry in postgresql.conf file.
     ```
